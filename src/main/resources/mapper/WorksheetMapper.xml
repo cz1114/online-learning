@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.WorksheetDao">
+ 
+    <!--query worksheet by id-->
+    <select id="getByUserId" resultType="java.util.Map">
+        select * from worksheet where userId = #{userId}
+    </select>
+
+    <!--addWorksheet-->
+    <insert id="addItem" parameterType="java.util.Map">
+        insert into
+            worksheet (`content`,userId)
+        values
+            (#{content},#{userId})
+    </insert>
+
+    <!--edit worksheet-->
+    <update id="updateItem">
+        update worksheet
+        <set>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+        </set>
+        where userId = #{userId}
+    </update>
+
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.UserDao">
+
+    <select id="getUserByUserNameAndPassword" resultType="com.demo.bean.User">
+        select * from user where loginname=#{loginname} and pwd =#{pwd}
+    </select>
+    <select id="getByloginname" resultType="com.demo.bean.User">
+        select * from user where loginname=#{loginname}
+    </select>
+
+    <update id="updateUser" parameterType="com.demo.bean.User">
+        update user
+        <set>
+            <if test="pwd!=null and pwd!=''">
+                pwd=#{pwd},
+            </if>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="address!=null and address!=''">
+                address=#{address},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="age!=null and age!=''">
+                age=#{age},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex=#{sex},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+    <!--query user-->
+    <select id="queryById" resultType="java.util.Map">
+        select * from user where id = #{id}
+    </select>
+
+    <!--get page list-->
+    <select id="getMapListByParam" resultType="java.util.Map">
+        select * from user
+        <where>
+            <if test="loginname != null and loginname!=''">
+                and loginname like '%${loginname}%'
+            </if>
+            <if test="name != null and name != ''">
+                and name like '%${name}%'
+            </if>
+            <if test="type != null and type != ''">
+                and `type` = #{type}
+            </if>
+        </where>
+        order by id desc
+        limit ${page},${limit}
+    </select>
+
+
+    <select id="getTotalCount" resultType="java.lang.Long">
+        select count(1) from user
+        <where>
+            <if test="loginname != null and loginname!=''">
+                and loginname like '%${loginname}%'
+            </if>
+            <if test="name != null and name != ''">
+                and name like '%${name}%'
+            </if>
+            <if test="type != null and type != ''">
+                and `type` = #{type}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addItem" parameterType="java.util.Map">
+        insert into
+            user (name,loginname,address,sex,pwd,age,phone,`type`,imageId)
+        values
+            (#{name},#{loginname},#{address},#{sex},#{pwd},#{age},#{phone},#{type},#{imageId})
+    </insert>
+
+    <update id="updateItem">
+        update user
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="loginname != null and loginname != ''">
+                loginname = #{loginname},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="pwd != null and pwd != ''">
+                pwd = #{pwd},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="age != null and age != ''">
+                age = #{age},
+            </if>
+            <if test="type != null and type != ''">
+                `type` = #{type},
+            </if>
+            <if test="imageId != null and imageId != ''">
+                `imageId` = #{imageId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from user where id = #{id}
+    </delete>
+
+    <select id="getAll" resultType="java.util.Map">
+        select * from user
+    </select>
+</mapper>
